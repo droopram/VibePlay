@@ -1,0 +1,35 @@
+{
+  "name": "vibeplay",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "three": "^0.159.0",
+    "@tweenjs/tween.js": "^21.0.0",
+    "cannon-es": "^0.20.0",
+    "peerjs": "^1.5.2",
+    "howler": "^2.2.3",
+    "eventemitter3": "^5.0.1",
+    "stats.js": "^0.17.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.159.0",
+    "@types/howler": "^2.2.11",
+    "@types/stats.js": "^0.17.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.4",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0"
+  }
+}

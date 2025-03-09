@@ -15,17 +15,17 @@ import { SystemManager } from "@core/SystemManager";
 export class Engine extends EventEmitter {
   private static _instance: Engine;
   private _isRunning = false;
-  private _clock: Clock;
+  private _clock: Clock = new Clock();
   private _lastTime = 0;
-  private _config: Config;
+  private _config: Config = { ...defaultConfig };
 
-  public sceneManager: SceneManager;
-  public rendererManager: RendererManager;
-  public assetManager: AssetManager;
-  public inputManager: InputManager;
-  public audioManager: AudioManager;
-  public systemManager: SystemManager;
-  public logger: Logger;
+  public sceneManager!: SceneManager;
+  public rendererManager!: RendererManager;
+  public assetManager!: AssetManager;
+  public inputManager!: InputManager;
+  public audioManager!: AudioManager;
+  public systemManager!: SystemManager;
+  public logger!: Logger;
 
   constructor(config: Partial<Config> = {}) {
     super();
@@ -99,7 +99,7 @@ export class Engine extends EventEmitter {
 
     // Update all systems
     this.systemManager.update(deltaTime);
-    this.inputManager.update(deltaTime);
+    this.inputManager.update();
     this.sceneManager.update(deltaTime);
 
     // Post-update phase
@@ -144,5 +144,54 @@ export class Engine extends EventEmitter {
    */
   public isDebugMode(): boolean {
     return this._config.debugMode;
+  }
+
+  /**
+   * Get render width configuration
+   */
+  public getRenderWidth(): number {
+    return this._config.renderWidth;
+  }
+
+  /**
+   * Get render height configuration
+   */
+  public getRenderHeight(): number {
+    return this._config.renderHeight;
+  }
+
+  /**
+   * Get pixel ratio configuration
+   */
+  public getPixelRatio(): number {
+    return this._config.pixelRatio;
+  }
+
+  /**
+   * Check if shadows are enabled
+   */
+  public areShadowsEnabled(): boolean {
+    return this._config.shadows;
+  }
+
+  /**
+   * Check if antialias is enabled
+   */
+  public isAntialiasEnabled(): boolean {
+    return this._config.antialias;
+  }
+
+  /**
+   * Check if FPS display is enabled
+   */
+  public isShowFPSEnabled(): boolean {
+    return this._config.showFPS;
+  }
+
+  /**
+   * Check if auto resize is enabled
+   */
+  public isAutoResizeEnabled(): boolean {
+    return this._config.autoResizeEnabled;
   }
 }

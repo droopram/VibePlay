@@ -170,7 +170,7 @@ export class Player implements Disposable {
     if (!this._isEnabled) return;
     
     // Handle movement input
-    this._handleMovementInput(deltaTime);
+    this._handleMovementInput();
     
     // Apply gravity
     this._applyGravity(deltaTime);
@@ -186,9 +186,9 @@ export class Player implements Disposable {
   }
 
   /**
-   * Handle movement input
+   * Handle player movement from input
    */
-  private _handleMovementInput(deltaTime: number): void {
+  private _handleMovementInput(): void {
     // Calculate movement speed
     const speed = this._isRunning ? this._settings.runSpeed : this._settings.walkSpeed;
     

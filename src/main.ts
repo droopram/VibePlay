@@ -1,8 +1,8 @@
-import './style.css';
-import { Engine } from '@core/Engine';
-import { ExampleScene } from '@scenes/ExampleScene';
-import { PhysicsSystem } from '@systems/physics/PhysicsSystem';
-import { NetworkSystem } from '@systems/network/NetworkSystem';
+import "./style.css";
+import { Engine } from "@core/Engine";
+import { SpaceScene } from "@scenes/SpaceScene";
+import { PhysicsSystem } from "@systems/physics/PhysicsSystem";
+import { NetworkSystem } from "@systems/network/NetworkSystem";
 
 // Create engine with config
 const engine = new Engine({
@@ -11,114 +11,106 @@ const engine = new Engine({
   logLevel: 3, // INFO level
 });
 
-// Create and register example scene first
-const exampleScene = new ExampleScene(engine);
-engine.sceneManager.registerScene('example', exampleScene);
+// Create and register space scene
+const spaceScene = new SpaceScene(engine);
+engine.sceneManager.registerScene("space", spaceScene);
 
 // Register assets (commented out until files are available)
 // Uncomment these when you add the actual audio files
 /*
 engine.assetManager.registerSound('ambient', '/assets/audio/ambient.mp3');
-engine.assetManager.registerSound('jump', '/assets/audio/jump.mp3');
-engine.assetManager.registerSound('land', '/assets/audio/land.mp3');
+engine.assetManager.registerSound('explosion', '/assets/audio/explosion.mp3');
+engine.assetManager.registerSound('thrust', '/assets/audio/thrust.mp3');
 */
 
 // Initialize lazy-loaded systems when needed
-const initPhysics = async () => {
+export const initPhysics = async () => {
   const physicsSystem = new PhysicsSystem(engine);
   await physicsSystem.init();
   engine.systemManager.registerSystem(physicsSystem);
   return physicsSystem;
 };
 
-const initNetworking = async () => {
+export const initNetworking = async () => {
   const networkSystem = new NetworkSystem(engine);
   await networkSystem.init();
   engine.systemManager.registerSystem(networkSystem);
   return networkSystem;
 };
 
-// Add minimal UI elements if needed
+// Create demo UI
 const createDemoUI = () => {
-  // No UI elements needed for the basic demo
-  // We're using the instructions from the scene instead
+  // Add any UI elements here
 };
 
 // Add any additional styles needed
 const addStyles = () => {
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     body {
       margin: 0;
+      padding: 0;
       overflow: hidden;
+      background-color: #000;
     }
-    
-    canvas {
-      display: block;
-    }
-    
-    .pointer-lock {
-      cursor: none;
+    #app {
+      width: 100vw;
+      height: 100vh;
     }
   `;
   document.head.appendChild(style);
 };
 
-// Initialize the application
+// Main initialization function
 const init = async () => {
   try {
-    // No assets to load for now
-    // When you add audio files, uncomment this:
-    /*
-    await Promise.all([
-      engine.assetManager.loadSound('ambient'),
-      engine.assetManager.loadSound('jump'),
-      engine.assetManager.loadSound('land')
-    ]);
-    */
-    
+    // Add styles
+    addStyles();
+
+    // Create UI
+    createDemoUI();
+
+    // Load any necessary systems or assets
+    // Uncomment if needed
+    // await initPhysics();
+
     // Hide loading screen
-    const loadingScreen = document.querySelector('.loading-screen');
+    const loadingScreen = document.querySelector(".loading-screen");
     if (loadingScreen) {
-      loadingScreen.classList.add('hidden');
+      loadingScreen.classList.add("hidden");
     }
-    
-    // Activate the example scene
-    engine.sceneManager.activateScene('example');
-    
+
+    // Activate the space scene
+    engine.sceneManager.activateScene("space");
+
     // Start the engine
     engine.start();
-    
-    // Create demo UI
-    createDemoUI();
-    addStyles();
-    
+
     // Update memory file
-    updateMemory('Engine started successfully with example scene');
-    
+    updateMemory("Engine started successfully with space scene");
   } catch (error) {
-    console.error('Failed to initialize game:', error);
+    console.error("Failed to initialize game:", error);
   }
 };
 
-// Helper to update memory file
+// For debugging - stores game state
 const updateMemory = (status: string) => {
   const memory = {
     status,
     timestamp: new Date().toISOString(),
-    activeScene: engine.sceneManager.activeScene ? 'example' : 'none',
+    activeScene: engine.sceneManager.activeScene ? "space" : "none",
     systems: {
-      physics: !!engine.systemManager.getSystem('physics'),
-      networking: !!engine.systemManager.getSystem('networking')
-    }
+      physics: !!engine.systemManager.getSystem("physics"),
+      networking: !!engine.systemManager.getSystem("networking"),
+    },
   };
-  
+
   // In a real application, this would write to mem.md
-  console.log('Memory updated:', memory);
+  console.log("Memory updated:", memory);
 };
 
 // Handle cleanup when window is closed
-window.addEventListener('beforeunload', () => {
+window.addEventListener("beforeunload", () => {
   engine.dispose();
 });
 

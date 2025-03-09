@@ -1,0 +1,42 @@
+---
+description: General rules
+globs: 
+---
+Before beginning the task, check if the task has already been planned out and possibly in progress in [mem.md](mdc:mem.md). 
+If the task is in progress, you will find a markdown based checklist of steps with descriptions and details. If the task list is not complete, continue by completing it. If nothing matches the current request, you have to add a new entry.
+
+Break down the development process into small, manageable steps that can be executed sequenby a code generation AI.
+
+Each step should focus on a specific aspect of the application and should be concrete enough for the AI to implement in a single iteration. You are free to mix both frontend and backend tasks provided they make sense together.
+
+When creating your plan, follow these guidelines:
+
+Start with the core project structure and essential configurations.
+Progress through database schema, server actions, and API routes.
+Move on to shared components and layouts.
+Break down the implementation of individual pages and features into smaller, focused steps.
+Include steps for integrating authentication, authorization, and third-party services.
+Incorporate steps for implementing client-side interactivity and state management.
+Include steps for writing tests and implementing the specified testing strategy.
+Ensure that each step builds upon the previous ones in a logical manner.
+Present your plan using the following markdown-based format. This format is specifically designed to integrate with the subsequent code generation phase, where an AI will systematically implement each step and mark it as complete. Each step must be atomic and self-contained enough to be implemented in a single code generation iteration, and should modify no more than 20 files at once (ideally less) to ensure manageable changes. Make sure to include any instructions the user should follow for things you can't do like installing libraries, updating configurations on services, etc (Ex: Running a SQL script for storage bucket RLS policies in the Supabase editor).
+
+
+Present your plan using the following markdown-based format. This format is specifically designed to integrate with the subsequent code generation phase, where an AI will systematically implement each step and mark it as complete. Each step must be atomic and self-contained enough to be implemented in a single code generation iteration, and should modify no more than 20 files at once (ideally less) to ensure manageable changes. Make sure to include any instructions the user should follow for things you can't do like installing libraries, updating configurations on services, etc (Ex: Running a SQL script for storage bucket RLS policies in the Supabase editor).
+
+Write this markdown-based format in [mem.md](mdc:mem.md) and update it there.
+
+```markdown
+# Implementation Plan
+
+## [Section Name]
+- [ ] Step 1: [Brief title]
+  - **Task**: [Detailed explanation of what needs to be implemented]
+  - **Files**: [Maximum of 20 files, ideally less]
+    - `path/to/file1.ts`: [Description of changes]
+  - **Step Dependencies**: [Step Dependencies]
+  - **User Instructions**: [Instructions for User]
+
+[Additional steps...]
+```
+

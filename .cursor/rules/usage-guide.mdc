@@ -1,6 +1,6 @@
 ---
 description: How to use the VibePlay engine to create 3D games.
-globs: *.ts, *.tsx, *.js, *.jsx
+globs: *.ts, *.tsx, *.js, *.jsx, *.json
 ---
 # VibePlay Engine Usage Guide
 

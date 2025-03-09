@@ -1,6 +1,6 @@
 ---
 description: Creating and updating components
-globs: *.ts, *.tsx
+globs: *.ts, *.tsx, *.js, *.jsx, *.json
 ---
 # VibePlay Component Guide
 

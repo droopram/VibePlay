@@ -1,6 +1,6 @@
 ---
 description: Understanding the architecture of the project
-globs: *.ts, *.js, *.tsx
+globs: *.ts, *.tsx, *.js, *.jsx, *.json
 ---
 # VibePlay Engine Architecture
 

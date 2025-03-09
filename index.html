@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VibePlay - 3D Game Engine</title>
-  <meta name="description" content="A powerful 3D game engine built with Three.js and Vite">
-</head>
-<body>
-  <div id="app"></div>
-  
-  <!-- Loading screen -->
-  <div class="loading-screen">
-    <h1>VibePlay Engine</h1>
-    <div class="loading-progress">
-      <div class="loading-bar" id="loadingBar"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VibePlay - 3D Game Engine</title>
+    <meta
+      name="description"
+      content="A powerful 3D game engine built with Three.js and Vite"
+    />
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <!-- Loading screen -->
+    <div class="loading-screen">
+      <h1>VibePlay Engine</h1>
+      <div class="loading-progress">
+        <div class="loading-bar" id="loadingBar"></div>
+      </div>
+      <div class="loading-text" id="loadingText">Loading resources...</div>
     </div>
-    <div class="loading-text" id="loadingText">Loading resources...</div>
-  </div>
-  
-  <!-- Controls hint -->
-  <div class="controls-hint">
-    <p>WASD to move | SHIFT to run | SPACE to jump | MOUSE to look</p>
-    <p>Click to enable controls and lock mouse</p>
-  </div>
-  
-  <script type="module" src="/src/main.ts"></script>
-</body>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

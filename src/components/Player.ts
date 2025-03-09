@@ -73,7 +73,7 @@ export class Player implements Disposable {
     this._object.position.set(0, 1.8, 0); // Eye height
     
     // If debug mode, add a visible body
-    if (engine._config.debugMode) {
+    if (engine.isDebugMode()) {
       const bodyGeometry = new BoxGeometry(0.5, 1.8, 0.5);
       const bodyMaterial = new MeshStandardMaterial({ color: 0x0000ff, wireframe: true });
       const bodyMesh = new Mesh(bodyGeometry, bodyMaterial);

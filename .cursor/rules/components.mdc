@@ -1,0 +1,191 @@
+---
+description: Creating and updating components
+globs: *.ts, *.tsx
+---
+# VibePlay Component Guide
+
+This document explains how to create and use components in the VibePlay engine.
+
+## What are Components?
+
+Components are reusable, modular pieces of functionality that can be attached to game objects. They follow the composition over inheritance principle, allowing you to build complex behaviors by combining simple components.
+
+## Creating a Component
+
+To create a new component:
+
+1. Implement the `Disposable` interface for proper resource cleanup
+2. Accept the Engine instance in the constructor for access to systems
+3. Provide methods for initialization, update, and cleanup
+
+Example component structure:
+
+```typescript
+import { Disposable } from '@utils/Disposable';
+import type { Engine } from '@core/Engine';
+
+export class MyComponent implements Disposable {
+  private _engine: Engine;
+  
+  constructor(engine: Engine) {
+    this._engine = engine;
+    // Initialize component
+  }
+  
+  public update(deltaTime: number): void {
+    // Update logic
+  }
+  
+  public dispose(): void {
+    // Clean up resources
+  }
+}
+```
+
+## Component Types
+
+### Visual Components
+
+These components handle rendering and visual effects:
+
+- Model components (loading and displaying 3D models)
+- Animation components (skeletal animations, keyframe animations)
+- Particle effect components
+- Post-processing effect components
+
+### Gameplay Components
+
+These components implement gameplay mechanics:
+
+- Character controllers (player, NPC)
+- AI behaviors
+- Interaction components
+- Health/damage components
+- Inventory components
+
+### Physics Components
+
+These integrate with the physics system:
+
+- Rigid body components
+- Collider components
+- Constraint components
+- Trigger components
+
+### Audio Components
+
+These work with the audio system:
+
+- Sound emitter components
+- Music player components
+- Ambient sound components
+
+## Component Communication
+
+Components can communicate in several ways:
+
+1. **Direct references**: Components can hold references to other components
+2. **Events**: Use the engine's event system for loosely coupled communication
+3. **Message passing**: Implement a message passing system for complex interactions
+
+Example event-based communication:
+
+```typescript
+// Broadcasting an event
+this._engine.emit('playerDamaged', { amount: 10 });
+
+// Listening for an event
+this._engine.on('playerDamaged', (data) => {
+  // Handle event
+});
+```
+
+## Component Lifecycle
+
+Manage your component's lifecycle properly:
+
+1. **Initialization**: Set up in the constructor
+2. **Activation**: When the component becomes active (e.g., when added to a scene)
+3. **Update**: Per-frame update logic
+4. **Deactivation**: When the component becomes inactive
+5. **Disposal**: Clean up all resources to prevent memory leaks
+
+## Best Practices
+
+1. **Single Responsibility**: Each component should do one thing well
+2. **Independence**: Minimize dependencies between components
+3. **Resource Management**: Always dispose of resources in the `dispose()` method
+4. **Event Cleanup**: Remove event listeners in the `dispose()` method
+5. **Performance**: Optimize update methods for components that run every frame
+6. **State Management**: Use clear state transitions for complex components
+
+## Example Components
+
+### Movement Component
+
+```typescript
+export class MovementComponent implements Disposable {
+  private _engine: Engine;
+  private _object: Object3D;
+  private _speed = 5;
+  
+  constructor(engine: Engine, object: Object3D) {
+    this._engine = engine;
+    this._object = object;
+  }
+  
+  public update(deltaTime: number): void {
+    // Handle input and move object
+    if (this._engine.inputManager.isKeyDown('w')) {
+      this._object.position.z -= this._speed * deltaTime;
+    }
+    // Handle other directions...
+  }
+  
+  public dispose(): void {
+    // Clean up any resources
+  }
+}
+```
+
+### Health Component
+
+```typescript
+export class HealthComponent implements Disposable {
+  private _engine: Engine;
+  private _maxHealth = 100;
+  private _currentHealth = 100;
+  
+  constructor(engine: Engine, maxHealth = 100) {
+    this._engine = engine;
+    this._maxHealth = maxHealth;
+    this._currentHealth = maxHealth;
+  }
+  
+  public takeDamage(amount: number): void {
+    this._currentHealth = Math.max(0, this._currentHealth - amount);
+    
+    this._engine.emit('healthChanged', {
+      current: this._currentHealth,
+      max: this._maxHealth
+    });
+    
+    if (this._currentHealth <= 0) {
+      this._engine.emit('died');
+    }
+  }
+  
+  public heal(amount: number): void {
+    this._currentHealth = Math.min(this._maxHealth, this._currentHealth + amount);
+    
+    this._engine.emit('healthChanged', {
+      current: this._currentHealth,
+      max: this._maxHealth
+    });
+  }
+  
+  public dispose(): void {
+    // Clean up event listeners if any
+  }
+}
+```

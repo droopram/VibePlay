@@ -1,13 +1,13 @@
-import { Clock } from 'three';
-import { EventEmitter } from 'eventemitter3';
-import { SceneManager } from '@core/SceneManager';
-import { RendererManager } from '@core/RendererManager';
-import { AssetManager } from '@systems/assets/AssetManager';
-import { InputManager } from '@systems/input/InputManager';
-import { AudioManager } from '@systems/audio/AudioManager';
-import { Logger } from '@utils/Logger';
-import { Config, defaultConfig } from '@core/Config';
-import { SystemManager } from '@core/SystemManager';
+import { Clock } from "three";
+import { EventEmitter } from "eventemitter3";
+import { SceneManager } from "@core/SceneManager";
+import { RendererManager } from "@core/RendererManager";
+import { AssetManager } from "@systems/assets/AssetManager";
+import { InputManager } from "@systems/input/InputManager";
+import { AudioManager } from "@systems/audio/AudioManager";
+import { Logger } from "@utils/Logger";
+import { Config, defaultConfig } from "@core/Config";
+import { SystemManager } from "@core/SystemManager";
 
 /**
  * Core Engine class that manages the main game loop and systems
@@ -18,7 +18,7 @@ export class Engine extends EventEmitter {
   private _clock: Clock;
   private _lastTime = 0;
   private _config: Config;
-  
+
   public sceneManager: SceneManager;
   public rendererManager: RendererManager;
   public assetManager: AssetManager;
@@ -29,7 +29,7 @@ export class Engine extends EventEmitter {
 
   constructor(config: Partial<Config> = {}) {
     super();
-    
+
     if (Engine._instance) {
       return Engine._instance;
     }
@@ -37,7 +37,7 @@ export class Engine extends EventEmitter {
     Engine._instance = this;
     this._config = { ...defaultConfig, ...config };
     this._clock = new Clock();
-    
+
     // Initialize core systems
     this.logger = new Logger(this._config.logLevel);
     this.rendererManager = new RendererManager(this);
@@ -46,11 +46,11 @@ export class Engine extends EventEmitter {
     this.inputManager = new InputManager(this);
     this.audioManager = new AudioManager(this);
     this.systemManager = new SystemManager(this);
-    
+
     // Make config property accessible
     this._config = this._config as Config;
-    
-    this.logger.info('Engine initialized');
+
+    this.logger.info("Engine initialized");
   }
 
   /**
@@ -58,14 +58,14 @@ export class Engine extends EventEmitter {
    */
   public start(): void {
     if (this._isRunning) return;
-    
+
     this._isRunning = true;
     this._clock.start();
     this._lastTime = this._clock.getElapsedTime();
-    
-    this.emit('start');
-    this.logger.info('Engine started');
-    
+
+    this.emit("start");
+    this.logger.info("Engine started");
+
     // Start animation loop
     this._tick();
   }
@@ -75,12 +75,12 @@ export class Engine extends EventEmitter {
    */
   public stop(): void {
     if (!this._isRunning) return;
-    
+
     this._isRunning = false;
     this._clock.stop();
-    
-    this.emit('stop');
-    this.logger.info('Engine stopped');
+
+    this.emit("stop");
+    this.logger.info("Engine stopped");
   }
 
   /**
@@ -88,26 +88,26 @@ export class Engine extends EventEmitter {
    */
   private _tick = (): void => {
     if (!this._isRunning) return;
-    
+
     // Calculate delta time
     const currentTime = this._clock.getElapsedTime();
     const deltaTime = currentTime - this._lastTime;
     this._lastTime = currentTime;
-    
+
     // Pre-update phase
-    this.emit('preUpdate', deltaTime);
-    
+    this.emit("preUpdate", deltaTime);
+
     // Update all systems
     this.systemManager.update(deltaTime);
     this.inputManager.update(deltaTime);
     this.sceneManager.update(deltaTime);
-    
+
     // Post-update phase
-    this.emit('postUpdate', deltaTime);
-    
+    this.emit("postUpdate", deltaTime);
+
     // Render
     this.rendererManager.render();
-    
+
     // Schedule next frame
     requestAnimationFrame(this._tick);
   };
@@ -117,16 +117,16 @@ export class Engine extends EventEmitter {
    */
   public dispose(): void {
     this.stop();
-    
+
     this.rendererManager.dispose();
     this.sceneManager.dispose();
     this.assetManager.dispose();
     this.inputManager.dispose();
     this.audioManager.dispose();
     this.systemManager.dispose();
-    
+
     this.removeAllListeners();
-    this.logger.info('Engine disposed');
+    this.logger.info("Engine disposed");
   }
 
   /**
@@ -137,5 +137,12 @@ export class Engine extends EventEmitter {
       Engine._instance = new Engine();
     }
     return Engine._instance;
+  }
+
+  /**
+   * Check if debug mode is enabled
+   */
+  public isDebugMode(): boolean {
+    return this._config.debugMode;
   }
 }
